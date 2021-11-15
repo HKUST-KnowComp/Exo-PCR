@@ -10,7 +10,7 @@ Resolving pronouns to their referents has long been studied as a fundamental nat
 <img width="500" src="fig/dialogue_example.PNG">
 </div>
 
-An example of resolving <font color="yellow">exophoric pronouns</font> in daily dialogues <font color="green">with</font> and <font color="red">without</font> the help of dialogue topics.
+An example of resolving <font color=yellow>exophoric pronouns</font> in daily dialogues <font color=green>with</font> and <font color=red>without</font> the help of dialogue topics.
 
 
 ### Definition of Exophora
@@ -39,14 +39,14 @@ In daily dialogues, speakers may often use exophoric pronouns to refer to object
 * How do dialogue topics help？
     * Objects more relevant to the topics are more likely to appear in the environment, such as "baseball player" under this dialogue topic.
     * Our model assigns higher scores to out-of-text objects which are more relevant to the dialogue topics.
-    
+
 ## Usage of Model
 
 ### Getting Started
 * Install python 3.6+ and the following requirements: `pip install -r requirements.txt`.
 * Build custom kernels by running `setup_all.sh`.
     * There are 3 platform-dependent ways to build custom TensorFlow kernels. Please comment/uncomment the appropriate lines in the script.
-* Download pretrained coreference BERT models with `./download_pretrained.sh <model_name>` (e.g,: bert_base, spanbert_base). This downloads BERT/SpanBERT models finetuned on OntoNotes as the baseline models to `models` folder.
+
 
 ### Preprocessing data
 
@@ -54,18 +54,24 @@ The training, validation, and test split of VisPro contains 4,000, 500, and 500 
 
 The data preprocessing is described in Sec. 5.4 of the paper. To enable straight reproduction, we upload the preprocessed data files in the `data` folder.
 
-
-### Training Instructions
+### Evaluation only
 
 * Run `python get_lda.py` to generate LDA topic labels.
+* Download model checkpoints of `topic_bert_base` from [checkpoint](https://drive.google.com/drive/folders/1X9ZAxsbIy8g1dipmFAd691sRvG2XPsTT?usp=sharing) to the `logs/topic_bert_base` directory.
+* Prediction: `python predict.py topic_bert_base`. Outputs are saved in the `output` directory.
+* Evaluation: `python evaluate.py topic_bert_base`.
+ 
+### Training from scratch
+
+* Download pretrained coreference BERT models with `./download_pretrained.sh <model_name>` (bert_base, spanbert_base, bert_large, spanbert_large). This downloads BERT/SpanBERT models finetuned on OntoNotes as the baseline models to `models` folder.
+* Run `python get_lda.py` to generate LDA topic labels.
 * Experiment configurations are found in `experiments.conf`.
-* Choose an experiment that you would like to run, e.g. `bert_base`.
+* Choose an experiment that you would like to run, e.g. `topic_bert_base`.
 * For training and prediction, set the `GPU` environment variable, which the code treats as shorthand for `CUDA_VISIBLE_DEVICES`.
 * Training: `python train.py <experiment>`
 * Results are stored in the `logs` directory and can be viewed via TensorBoard.
-* Prediction: `python predict.py <experiment>`
+* Prediction: `python predict.py <experiment>`. Outputs are saved in the `output` directory.
 * Evaluation: `python evaluate.py <experiment>`.
-
 
 
 ## Acknowledgment
@@ -76,7 +82,7 @@ If you have questions about the data or the code, you are welcome to open an iss
 
 The readers are welcome to star/fork this repository and use it to train your own model, reproduce our experiment, and follow our future work. Please kindly cite our paper:
 ```
-@inproceedings{YuExoPCR,
+@inproceedings{DBLP:conf/emnlp/YuZSZX021,
   author    = {Xintong Yu and
                Hongming Zhang and
                Yangqiu Song and
@@ -84,8 +90,12 @@ The readers are welcome to star/fork this repository and use it to train your ow
                Kun Xu and
                Dong Yu},
   title     = {Exophoric Pronoun Resolution in Dialogues with Topic Regularization},
-  booktitle = {Proceedings of EMNLP 2021},
+  booktitle = {Proceedings of the 2021 Conference on Empirical Methods in Natural
+               Language Processing, {EMNLP} 2021, Virtual Event / Punta Cana, Dominican
+               Republic, 7-11 November, 2021},
+  pages     = {3832--3845},
   publisher = {Association for Computational Linguistics},
   year      = {2021},
+  url       = {https://aclanthology.org/2021.emnlp-main.311},
 }
 ```
